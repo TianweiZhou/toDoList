@@ -1,9 +1,12 @@
 const Customer = require('../models/customer');
+const CustomerHelper = require('../utils/customerHelper');
 
 exports.getAllCustomers = async () => {
     try {
-        const customers = await Customer.find();
-        return { customers: customers };
+        const customers = await Customer.find().select('-_v');
+        //create de-mirror structure
+        const deMirroredCustomer = CustomerHelper.deMirrorCustomer(customers);
+        return { customers: deMirroredCustomer };
     } catch (error) {
         throw new Error(error);
     }
@@ -54,7 +57,9 @@ exports.deleteCustomerByID = async (customerID) => {
 exports.getCustomerByID = async (customerID) => {
     try {
         const customer = await Customer.findById(customerID);
-        return { customer: customer };
+        //create de-mirror structure
+        const deMirroredCustomer = CustomerHelper.deMirrorCustomer(customer);
+        return { customer: deMirroredCustomer };
     } catch (error) {
         throw new Error(error);
     }

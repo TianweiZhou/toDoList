@@ -6,7 +6,9 @@ let ReminderSchema = new mongoose.Schema({
     customerID: { type: mongoose.ObjectId, require: true, ref: 'customer' },
     createDateTime: { type: Date },
     dueDateTime: { type: Date },
-    currentStatus: { type: Number }
+    stepIndex: { type: Number },
+    steps: { type: mongoose.ObjectId, require: true, ref: 'steps' },
+    isDone: { type: Boolean }
 });
 
 const Reminder = mongoose.model('reminder', ReminderSchema, 'Reminder');
