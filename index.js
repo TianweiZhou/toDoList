@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors')
 const app = express();
+const helmet = require("helmet");
 require('dotenv').config();
 
 const connectDB = require('./database/connectDB');
@@ -13,6 +14,7 @@ try {
     connectDB;
 
     app.use(cors());
+    app.use(helmet());
     app.use(RateLimiter.getLimiter());
     app.use(express.json({ limit: '5mb' }));
     app.use(express.urlencoded({ extended: true }));
