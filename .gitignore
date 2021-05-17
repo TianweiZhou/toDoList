@@ -2,4 +2,8 @@
 node_modules/
 
 #env
+#dependence
+node_modules/
+
+#env
 .env
