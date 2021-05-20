@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 let CustomerSchema = new mongoose.Schema({
+    _id: false,
     firstName: { type: String },
     lastName: { type: String },
     DOB: { type: String },
@@ -10,5 +11,4 @@ let CustomerSchema = new mongoose.Schema({
     secondaryEmail: { type: String }
 });
 
-const Customer = mongoose.model('customer', CustomerSchema, 'Customers');
-module.exports = Customer;
+module.exports = CustomerSchema;

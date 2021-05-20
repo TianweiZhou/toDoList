@@ -5,10 +5,14 @@ exports.getAllSteps = async () => {
     try {
         const steps = await Steps.find().select('title notes workflow');
         //create de-mirror structure 
-        const deMirroredSteps = StepsHelper.deMirrorSteps(steps);
-        return { steps: deMirroredSteps };
+        if (steps) {
+            const deMirroredSteps = StepsHelper.deMirrorSteps(steps);
+            return { steps: deMirroredSteps };
+        } else {
+            return { steps: [] };
+        }
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 };
 
@@ -22,20 +26,24 @@ exports.createSteps = async (title, notes, workflow) => {
         await newSteps.save();
         return { msg: 'Steps create successfully' };
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 };
 
 exports.updateStepsByID = async (stepsID, title, notes, workflow) => {
     try {
-        const steps = await Steps.findById(stepsID);
-        steps.title = title ? title : '';
-        steps.notes = notes ? notes : '';
-        steps.workflow = workflow;
-        await steps.save();
-        return { msg: 'Steps update successfully' };
+        const steps = await Steps.findById(stepsID).select('-_v');
+        if (steps) {
+            steps.title = title ? title : '';
+            steps.notes = notes ? notes : '';
+            steps.workflow = workflow;
+            await steps.save();
+            return { msg: 'Steps update successfully' };
+        } else {
+            throw new Error('Steps not found');
+        }
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 };
 
@@ -44,17 +52,21 @@ exports.deleteStepsByID = async (stepsID) => {
         await Steps.findByIdAndDelete(stepsID);
         return { msg: 'Steps delete successfully' };
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 };
 
 exports.getStepsByID = async (stepsID) => {
     try {
-        const steps = await (await Steps.findById(stepsID)).isSelected('-_v');
+        const steps = await Steps.findById(stepsID).select('-_v');
         //create de-mirror structure
-        const deMirroredSteps = StepsHelper.deMirrorSteps(steps);
-        return { steps: deMirroredSteps };
+        if (steps) {
+            const deMirroredSteps = StepsHelper.deMirrorSteps([steps]);
+            return { steps: deMirroredSteps };
+        } else {
+            return { steps: [] };
+        }
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 };

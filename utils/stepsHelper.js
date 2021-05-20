@@ -2,6 +2,7 @@ exports.deMirrorSteps = (steps) => {
     try {
         const deMirroredSteps = steps.map(s => {
             return {
+                stepsID: s._id,
                 title: s.title,
                 notes: s.notes,
                 stepsArr: s.workflow
@@ -9,6 +10,6 @@ exports.deMirrorSteps = (steps) => {
         });
         return deMirroredSteps;
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 };

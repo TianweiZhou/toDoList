@@ -58,7 +58,7 @@ router.get('/:stepsID',
             const result = await stepsService.getStepsByID(stepsID);
             res.status(200).send(result);
         } catch (error) {
-            res.status(500).json({ err: [{ msg: err.message }] });
+            res.status(500).json({ err: [{ msg: error.message }] });
         }
     });
 

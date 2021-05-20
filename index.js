@@ -6,9 +6,9 @@ require('dotenv').config();
 
 const connectDB = require('./database/connectDB');
 const RateLimiter = require('./middlewares/rateLimiter');
-const CustomerRoute = require('./routes/customerRoute');
 const ReminderRoute = require('./routes/reminderRoute');
 const StepsRoute = require('./routes/stepsRoute');
+const PORT = process.env.PORT || 4000;
 
 try {
     connectDB;
@@ -19,12 +19,11 @@ try {
     app.use(express.json({ limit: '5mb' }));
     app.use(express.urlencoded({ extended: true }));
 
-    app.use('/customer', CustomerRoute);
     app.use('/reminder', ReminderRoute);
     app.use('/steps', StepsRoute);
 
-    app.listen(() => {
-        console.log(`listening at ${process.env.PORT || 4000}`);
+    app.listen(PORT, () => {
+        console.log(`listening at ${PORT}`);
     })
 } catch (err) {
     console.log(err.message);
