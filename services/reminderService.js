@@ -45,7 +45,7 @@ exports.createReminder = async (firstName, lastName, DOB, primaryPhone, secondar
 
 exports.updateReminderByID = async (reminderID, firstName, lastName, DOB, primaryPhone, secondaryPhone, primaryEmail, secondaryEmail, title, notes, dueDateStr, stepsID) => {
     try {
-        let additionalMsg = '';//using for steps update
+        let additionalMsg = ''; //using for steps update
         const reminder = await Reminder.findById(reminderID).select('-_v');
         if (reminder) {
             //update customer info
