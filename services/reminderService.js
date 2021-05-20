@@ -91,7 +91,7 @@ exports.deleteReminderByID = async (reminderID) => {
 
 exports.getReminderByID = async (reminderID) => {
     try {
-        const reminder = await Reminder.findById(reminderID).select('-_v');
+        const reminder = await Reminder.findById(reminderID).populate('stepsID').select('-_v');
         if(reminder){
             //create de-mirror structure 
             const deMirroredReminder = ReminderHelper.deMirrorReminder([reminder]);
