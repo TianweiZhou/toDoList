@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const reminderService = require('../services/reminderService');
+const Validator = require('../validator/reminderValidator');
 
 router.get('/',
     async (req, res) => {
@@ -14,16 +15,17 @@ router.get('/',
     });
 
 router.post('/',
+    Validator.validateCreateReminder,
     async (req, res) => {
         try {
             //info for customer
-            const firstName = req.body.first;
-            const lastName = req.body.last;
+            const firstName = req.body.first.toUpperCase();
+            const lastName = req.body.last.toUpperCase();
             const DOB = req.body.birth;
             const primaryPhone = req.body.phone;
             const secondaryPhone = req.body.addPhone;
-            const primaryEmail = req.body.email;
-            const secondaryEmail = req.body.addEmail;
+            const primaryEmail = req.body.email.toLowerCase();
+            const secondaryEmail = req.body.addEmail.toLowerCase();
             //info for reminder
             const title = req.body.title;
             const notes = req.body.notes;
@@ -37,6 +39,7 @@ router.post('/',
     });
 
 router.put('/',
+    Validator.validateUpdateReminder,
     async (req, res) => {
         try {
             //info for customer
@@ -61,6 +64,7 @@ router.put('/',
     });
 
 router.delete('/',
+    Validator.validateDeleteReminderByID,
     async (req, res) => {
         try {
             const reminderID = req.query.reminderID;
@@ -72,6 +76,7 @@ router.delete('/',
     });
 
 router.get('/:reminderID',
+    Validator.validateGetReminderByID,
     async (req, res) => {
         try {
             const reminderID = req.params.reminderID;
